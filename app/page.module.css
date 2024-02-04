@@ -8,12 +8,17 @@
 
 .overlay {
   text-align: center;
+  white-space: nowrap;
 }
 
 .overlay h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 1rem;
+}
+
+.overlay p {
+  font-size: 14px;
 }
 
 .link {
@@ -28,4 +33,14 @@
   color: white;
   border-radius: 5px;
   transform: translateX(-50%);
+}
+
+@media screen and (min-width: 576px) {
+  .overlay h1 {
+    font-size: 3rem;
+  }
+
+  .overlay p {
+    font-size: 16px;
+  }
 }

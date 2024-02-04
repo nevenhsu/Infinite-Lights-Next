@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import MyCanvas, { type MyCanvasRef } from '@/components/scene/MyCanvas'
+import MyCanvas, { type MyCanvasRef } from '@/components/sceneWithControls/MyCanvas'
 import classes from './page.module.css'
 
 export default function Page() {

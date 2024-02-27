@@ -1,6 +1,6 @@
-import { getDistortion } from "./distortions";
+import { getDistortion } from './distortions'
 
-type TwoNumbers = [number, number];
+type TwoNumbers = [number, number]
 
 export const options = {
   // basic
@@ -49,15 +49,15 @@ export const options = {
   carFloorSeparation: [0, 0.2] as TwoNumbers, // Self Explanatory
 
   colors: {
-    roadColor: "#080808",
-    islandColor: "#0a0a0a",
-    shoulderLines: "#131318",
-    brokenLines: "#131318",
+    roadColor: '#080808',
+    islandColor: '#0a0a0a',
+    shoulderLines: '#131318',
+    brokenLines: '#131318',
     /***  Only these colors can be an array ***/
-    leftCars: ["#7d0d1b", "#a90519", "#ff102a"],
-    rightCars: ["#f1eece", "#e6e2b1", "#dfd98a"],
-    sticks: ["#f1eece", "#f1eece", "#f1eece"],
+    leftCars: ['#7d0d1b', '#a90519', '#ff102a'],
+    rightCars: ['#f1eece', '#e6e2b1', '#dfd98a'],
+    sticks: ['#f1eece', '#f1eece', '#f1eece'],
   },
 
-  distortion: getDistortion("xyDistortion"),
-};
+  distortion: getDistortion('xyDistortion'),
+}

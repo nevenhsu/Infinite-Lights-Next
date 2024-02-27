@@ -1,28 +1,26 @@
-"use client";
+'use client'
 
-import { Vector2, Vector3 } from "three";
-import { forwardRef, useImperativeHandle, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import Road, { type RoadRef } from "@/components/scene/models/Road";
-import CarLight, { type CarLightRef } from "@/components/scene/models/CarLight";
-import LightsSticks, {
-  type LightsSticksRef,
-} from "@/components/scene/models/LightsSticks";
-import { isPerspectiveCamera, lerp } from "@/components/scene/utils/helpers";
-import { options } from "@/components/scene/config";
+import { Vector2, Vector3 } from 'three'
+import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { EffectComposer, Bloom } from '@react-three/postprocessing'
+import Road, { type RoadRef } from '@/components/scene/models/Road'
+import CarLight, { type CarLightRef } from '@/components/scene/models/CarLight'
+import LightsSticks, { type LightsSticksRef } from '@/components/scene/models/LightsSticks'
+import { isPerspectiveCamera, lerp } from '@/components/scene/utils/helpers'
+import { options } from '@/components/scene/config'
 
-export type MyCanvasRef = { speedUp: () => void; speedDown: () => void };
+export type MyCanvasRef = { speedUp: () => void; speedDown: () => void }
 
 const Scene = forwardRef<MyCanvasRef, {}>(function Scene(props, ref) {
-  const carLightRRef = useRef<CarLightRef>(null);
-  const carLightLRef = useRef<CarLightRef>(null);
-  const roadRRef = useRef<RoadRef>(null);
-  const roadLRef = useRef<RoadRef>(null);
-  const islandRef = useRef<RoadRef>(null);
-  const sticksRef = useRef<LightsSticksRef>(null);
+  const carLightRRef = useRef<CarLightRef>(null)
+  const carLightLRef = useRef<CarLightRef>(null)
+  const roadRRef = useRef<RoadRef>(null)
+  const roadLRef = useRef<RoadRef>(null)
+  const islandRef = useRef<RoadRef>(null)
+  const sticksRef = useRef<LightsSticksRef>(null)
 
-  const { camera } = useThree();
+  const { camera } = useThree()
 
   const stateRef = useRef({
     speedUpTarget: 0,
@@ -30,48 +28,48 @@ const Scene = forwardRef<MyCanvasRef, {}>(function Scene(props, ref) {
     timeOffset: 0,
     fovTarget: options.fov,
     fov: options.fov,
-  });
+  })
 
   useImperativeHandle(ref, () => ({
     speedUp() {
-      stateRef.current.speedUpTarget = options.speedUp;
-      stateRef.current.fovTarget = options.fovSpeedUp;
-      return;
+      stateRef.current.speedUpTarget = options.speedUp
+      stateRef.current.fovTarget = options.fovSpeedUp
+      return
     },
     speedDown() {
-      stateRef.current.speedUpTarget = 0;
-      stateRef.current.fovTarget = options.fov;
-      return;
+      stateRef.current.speedUpTarget = 0
+      stateRef.current.fovTarget = options.fov
+      return
     },
-  }));
+  }))
 
   useFrame((state, delta) => {
-    let { speedUp, speedUpTarget, timeOffset, fovTarget } = stateRef.current;
-    const coefficient = -60 * Math.log2(1 - 0.1);
-    const lerpT = Math.exp(-coefficient * delta);
+    let { speedUp, speedUpTarget, timeOffset, fovTarget } = stateRef.current
+    const coefficient = -60 * Math.log2(1 - 0.1)
+    const lerpT = Math.exp(-coefficient * delta)
 
-    speedUp += lerp(speedUp, speedUpTarget, lerpT, 0.00001);
-    timeOffset += speedUp * delta;
-    const time = state.clock.elapsedTime + timeOffset;
+    speedUp += lerp(speedUp, speedUpTarget, lerpT, 0.00001)
+    timeOffset += speedUp * delta
+    const time = state.clock.elapsedTime + timeOffset
 
-    carLightRRef.current?.updateUniforms([{ key: "uTime", value: time }]);
-    carLightLRef.current?.updateUniforms([{ key: "uTime", value: time }]);
-    islandRef.current?.updateUniforms([{ key: "uTime", value: time }]);
-    roadRRef.current?.updateUniforms([{ key: "uTime", value: time }]);
-    roadLRef.current?.updateUniforms([{ key: "uTime", value: time }]);
-    sticksRef.current?.updateUniforms([{ key: "uTime", value: time }]);
+    carLightRRef.current?.updateUniforms([{ key: 'uTime', value: time }])
+    carLightLRef.current?.updateUniforms([{ key: 'uTime', value: time }])
+    islandRef.current?.updateUniforms([{ key: 'uTime', value: time }])
+    roadRRef.current?.updateUniforms([{ key: 'uTime', value: time }])
+    roadLRef.current?.updateUniforms([{ key: 'uTime', value: time }])
+    sticksRef.current?.updateUniforms([{ key: 'uTime', value: time }])
 
-    let updateCamera = false;
+    let updateCamera = false
     if (isPerspectiveCamera(camera)) {
-      const fovChange = lerp(camera.fov, fovTarget, lerpT);
+      const fovChange = lerp(camera.fov, fovTarget, lerpT)
       if (fovChange) {
-        camera.fov += fovChange * delta * 6;
-        updateCamera = true;
+        camera.fov += fovChange * delta * 6
+        updateCamera = true
       }
     }
 
     if (options.distortion.getJS) {
-      const distortion = options.distortion.getJS(0.025, time);
+      const distortion = options.distortion.getJS(0.025, time)
 
       camera.lookAt(
         new Vector3(
@@ -79,17 +77,17 @@ const Scene = forwardRef<MyCanvasRef, {}>(function Scene(props, ref) {
           camera.position.y + distortion.y,
           camera.position.z + distortion.z
         )
-      );
-      updateCamera = true;
+      )
+      updateCamera = true
     }
 
     if (updateCamera) {
-      camera.updateProjectionMatrix();
+      camera.updateProjectionMatrix()
     }
 
     // Update state
-    stateRef.current = { ...stateRef.current, speedUp, timeOffset };
-  });
+    stateRef.current = { ...stateRef.current, speedUp, timeOffset }
+  })
 
   return (
     <>
@@ -132,15 +130,13 @@ const Scene = forwardRef<MyCanvasRef, {}>(function Scene(props, ref) {
         <Bloom luminanceThreshold={0.2} />
       </EffectComposer>
     </>
-  );
-});
+  )
+})
 
 export default forwardRef<MyCanvasRef, {}>(function MyCanvas(props, ref) {
   return (
-    <Canvas
-      camera={{ position: [0, 8, -4], rotation: [0, 0, 0], fov: options.fov }}
-    >
+    <Canvas camera={{ position: [0, 8, -4], rotation: [0, 0, 0], fov: options.fov }}>
       <Scene ref={ref} />
     </Canvas>
-  );
-});
+  )
+})

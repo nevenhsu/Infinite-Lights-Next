@@ -1,4 +1,4 @@
-import { options } from "@/components/scene/config";
+import { options } from '@/components/scene/config'
 
 export const fragmentShader = `
 varying vec3 vColor;
@@ -15,7 +15,7 @@ void main() {
   gl_FragColor = vec4(color, alpha);
   if (gl_FragColor.a < 0.0001) discard;
 }
-`;
+`
 
 export const vertexShader = `
 attribute vec3 aOffset;
@@ -55,4 +55,4 @@ void main() {
   vUv = uv;
   vColor = aColor;
 }
-`;
+`

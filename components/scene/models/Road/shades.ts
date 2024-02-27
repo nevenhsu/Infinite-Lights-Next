@@ -1,4 +1,4 @@
-import { options } from "@/components/scene/config";
+import { options } from '@/components/scene/config'
 
 const roadMarkVars = `
 uniform float uLanes;
@@ -16,7 +16,7 @@ highp float random(vec2 co)
     highp float sn= mod(dt,3.14);
     return fract(sin(sn) * c);
 }
-`;
+`
 
 const roadMarkFragment = `
 uv.y = mod(uv.y + uTime * 0.1, 1.);
@@ -39,27 +39,27 @@ color = mix(color, uBrokenLinesColor, shoulderLines);
 vec2 noiseFreq = vec2(4., 8000.);
 float roadNoise = random(floor(uv * noiseFreq) / noiseFreq) * 0.012 - 0.01; 
 color += roadNoise;
-`;
+`
 
 const roadBaseFragment = (isRoad: boolean) => `
 uniform vec3 uColor;
 uniform float uTime;
 varying vec2 vUv; 
 
-${isRoad ? roadMarkVars : ""}
+${isRoad ? roadMarkVars : ''}
 
 void main(){
   vec2 uv = vUv;
   vec3 color = vec3(uColor);
 
-  ${isRoad ? roadMarkFragment : ""}
+  ${isRoad ? roadMarkFragment : ''}
 
   gl_FragColor = vec4(color, 1.);
 }
-`;
+`
 
-export const roadFragment = roadBaseFragment(true);
-export const islandFragment = roadBaseFragment(false);
+export const roadFragment = roadBaseFragment(true)
+export const islandFragment = roadBaseFragment(false)
 
 export const vertexShader = `
 uniform float uTravelLength;
@@ -80,4 +80,4 @@ void main() {
   gl_Position = projectionMatrix * mvPosition;
   vUv = uv;
 }
-`;
+`

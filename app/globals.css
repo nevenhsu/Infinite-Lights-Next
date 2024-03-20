@@ -1,6 +1,7 @@
 :root {
   * {
     box-sizing: border-box;
+    font-family: var(--next-text);
   }
 
   html,

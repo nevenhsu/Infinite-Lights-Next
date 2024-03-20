@@ -5,6 +5,7 @@ import type { Metadata, Viewport } from 'next'
 
 const inter = Inter({
   subsets: ['latin'],
+  variable: '--next-text',
 })
 
 export const viewport: Viewport = {
@@ -22,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head></head>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.variable}>{children}</body>
     </html>
   )
 }
